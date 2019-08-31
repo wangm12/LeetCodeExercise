@@ -1,0 +1,57 @@
+"""
+                       10
+                   /        \
+                20           30
+              /    \           \
+            40      50          60
+                  /    \
+                80      80
+              /   \
+           None   None
+Non-connected sets of nodes:
+  - |10, 40, 50, 60| = 4
+  - |20, 30, 70, 80| = 4
+  - |10, 40, 60, 80, 80| = 5 -- longest non-connected set of nodes
+"""
+
+"""
+            10
+            /
+            9
+            /
+            8
+"""
+
+
+# edge case
+# root = None -> 0
+# value doesn't matter
+
+# helper(root) function -> (int, int)
+from collections import namedtuple
+
+Node = namedtuple('Node', ['left', 'right'])
+
+def longest_non_connected_set(root):
+    """return the longest non-connected set in in `root`"""
+    if not root: return 0 # edge case
+    def helper(root):
+        if not root: return [0, 0]
+        left = helper(root.left)
+        right = helper(root.right)
+        returnLeft = left[1] + right[1] + 1
+        returnRight = max(left) + max(right)
+        return [returnLeft, returnRight]
+    return max(helper(root))
+
+"""
+      1
+    /  \
+    2   3
+"""
+
+root = Node(left=Node(left=None, right=None), right=Node(left=None, right=None))
+print(longest_non_connected_set(root))
+
+root = Node(left=Node(left=None, right=None), right=None)
+print(longest_non_connected_set(root))
